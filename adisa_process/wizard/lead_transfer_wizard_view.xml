@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="lead_transfer_wizard_form_view">
+            <field name="name">lead.transfer.wizard.form</field>
+            <field name="model">lead.transfer.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Transfert d'opportunités">
+                    <group>
+                        <field name="vendor" options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}"/>
+                    </group>
+                    <notebook>
+                            <page>
+                                <field name="lead_ids" readonly="1"/>
+                            </page>
+                        </notebook>
+                    <footer>
+                        <button name="action_confirm" type="object" string="Confirm" class="oe_highlight"/>
+                        or
+                        <button special="cancel" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <act_window id="lead_transfer_wizard_form_view"
+                    name="Transfert d'opportunités"
+                    binding_model="crm.lead"
+                    res_model="lead.transfer.wizard"
+                    view_mode="form"
+                    target="new"/>
+
+    </data>
+</odoo>

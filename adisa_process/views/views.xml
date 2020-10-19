@@ -1,0 +1,152 @@
+<odoo>
+    <data>
+
+        <record id="adisa_product_template_form_inherit" model="ir.ui.view">
+            <field name="name">adisa.product.template.extends.form</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="priority" eval="16"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='company_id']" position="after">
+                    <field name="margin_rate"/>
+
+                </xpath>
+
+                <xpath expr="//page[@name='inventory']" position="after">
+                    <page string="Composition produit" name="composition">
+                        <field name="margin_ids" string="Composition produit">
+                            <tree editable="True">
+                                <field name="partner_id"/>
+                                <field name="product_id"/>
+                                <field name="description"/>
+                                <field name="cost"/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+
+            </field>
+        </record>
+
+
+        <record id="adisa_sale_order_form_inherit" model="ir.ui.view">
+            <field name="name">adisa.sale.order.extends.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='state']" position="replace">
+                    <button name="submit" states="basic" type="object" string="Soumettre" class="oe_highlight"/>
+                    <button name="validation" states="validation" type="object" string="Valider" class="oe_highlight"
+                            groups="sales_team.group_sale_salesman_all_leads"/>
+                    <button name="reject" states="validation" type="object" string="Rejeter"
+                            groups="sales_team.group_sale_salesman_all_leads"/>
+                    <button name="reject" states="cancel" type="object" string="Mettre en brouillon"/>
+                    <field name="state" widget="statusbar" statusbar_visible="basic,validation,draft,sent,sale"/>
+                </xpath>
+
+                <xpath expr="//field[@name='payment_term_id']" position="after">
+                    <field name="condition_sale"/>
+                </xpath>
+
+                <xpath expr="//notebook/page/field/tree/field[@name='product_id']" position="before">
+                    <field name="categ_id" optional="show"/>
+                </xpath>
+
+                <xpath expr="//notebook/page/field/tree/field[@name='product_uom_qty']" position="after">
+                    <field name="duration" optional="show"/>
+                </xpath>
+
+            </field>
+        </record>
+
+
+        <record id="adisa_sale_subscription_form_inherit" model="ir.ui.view">
+            <field name="name">adisa.sale.subscription.extends.form</field>
+            <field name="model">sale.subscription</field>
+            <field name="inherit_id" ref="sale_subscription.sale_subscription_view_form"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook/page/div/field/tree/field[@name='quantity']" position="after">
+                    <field name="duration" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="adisa_product_subscription_form_inherit" model="ir.ui.view">
+            <field name="name">adisa.product.template.extends.form</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="sale_subscription.product_template_view_form_recurring"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='recurring_invoice']" position="after">
+                    <field name="duration" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="adisa_account_move_form_inherit" model="ir.ui.view">
+            <field name="name">adisa.account.move.extends.form</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='quantity']" position="after">
+                    <field name="duration"/>
+                </xpath>
+                <xpath expr="//field[@name='line_ids']/tree/field[@name='quantity']" position="after">
+                    <field name="duration"/>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="adisa_res_partner_search_inherit" model="ir.ui.view">
+            <field name="name">adisa.res.partner.extends.search</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="account.res_partner_view_search"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='customer']" position="replace">
+                    <filter string="Customers" name="customer" domain="['|', ('society_nature','=', 'customer'), ('contact_nature','=', 'customer')]"/>
+                </xpath>
+
+                <xpath expr="//filter[@name='supplier']" position="replace">
+                    <filter string="Vendors" name="supplier" domain="['|', ('society_nature','=', 'suppliers'), ('contact_nature','=', 'suppliers')]"/>
+                    <filter string="Prescripteurs" name="prescript" domain="['|', ('society_nature','=', 'prescript'), ('contact_nature','=', 'prescript')]"/>
+                    <filter string="Prospects" name="prospect" domain="['|', ('society_nature','=', 'prospect'), ('contact_nature','=', 'prospect')]"/>
+                    <filter string="Employés" name="employee" domain="[('contact_nature','=', 'employee')]"/>
+                </xpath>
+
+<!--                <xpath expr="//filter[@name='']"-->
+
+            </field>
+        </record>
+
+
+        <record id="adisa_crm_lead_form_inherit" model="ir.ui.view">
+            <field name="name">adisa.crm.lead.form</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//button[@name='%(crm.crm_lead_lost_action)d']" position="after">
+                    <button name="%(lead_transfer_wizard_form_view)d" type="action" class="oe_highlight"
+                            string="Transférer l'opportunité"/>
+                </xpath>
+
+                <xpath expr="//field[@name='is_blacklisted']" position="after">
+                    <field name="company_type" invisible="1"/>
+                    <field string="Contact" name="contact"
+                           attrs="{'invisible' : [('company_type','=','person')]}"/>
+                </xpath>
+
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_product_purchase_composition_user,product.purchase.composition,model_product_purchase_composition,base.group_user,1,1,1,1
+access_res_partner_society_category_user,res.partner.society.category,model_res_partner_society_category,base.group_user,1,1,1,1
+access_res_partner_activity_user,res.partner.activity,model_res_partner_activity,base.group_user,1,1,1,1
+access_res_partner_function_user,res.partner.function,model_res_partner_function,base.group_user,1,1,1,1

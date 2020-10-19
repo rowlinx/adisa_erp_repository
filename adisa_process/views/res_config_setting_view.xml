@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+<!--        TODO rajouter une icone au module-->
+        <record id="adisa_res_config_settings_view_form" model="ir.ui.view">
+            <field name="name">adisa.res.config.settings.view.form.inherit</field>
+            <field name="model">res.config.settings</field>
+            <field name="priority" eval="25"/>
+            <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[hasclass('settings')]" position="inside">
+                    <div class="app_settings_block" data-string="adisa_process" string="Adisa" data-key="adisa_process">
+                        <h2>Adisa</h2>
+                        <div class="row mt16 o_settings_container" name="sms_xsel_setting_container">
+
+                            <div class="col-2 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <label for="condition_of_sale"/>
+                                </div>
+                            </div>
+
+                            <div class="col-4 o_setting_box">
+                                <div class="o_setting_right_pane">
+                                    <field name="condition_of_sale" Widget="url"/>
+                                </div>
+                            </div>
+                            <div class="col-2 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <label for="periodicity"/>
+                                </div>
+                            </div>
+
+                            <div class="col-4 o_setting_box">
+                                <div class="o_setting_right_pane">
+                                    <field name="interval"/>
+                                    <field name="periodicity"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+<!--        <record id="action_adisa_process_configuration" model="ir.actions.act_window">-->
+<!--            <field name="name">Settings</field>-->
+<!--            <field name="type">ir.actions.act_window</field>-->
+<!--            <field name="res_model">res.config.settings</field>-->
+<!--            <field name="view_mode">form</field>-->
+<!--            <field name="target">inline</field>-->
+<!--            <field name="context">{'module' : 'adisa_process'}</field>-->
+<!--        </record>-->
+
+
+<!--        <menuitem id="menu_adisa_process_general_settings" name="Settings Adisa" parent="sms_config_menu"-->
+<!--                  sequence="2" action="action_adisa_process_configuration"/>-->
+
+    </data>
+</odoo>

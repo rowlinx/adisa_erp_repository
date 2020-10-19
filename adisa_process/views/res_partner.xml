@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="res_partner_society_category_form_view" model="ir.ui.view">
+            <field name="name">res.partner.society.category.form</field>
+            <field name="model">res.partner.society.category</field>
+            <field name="arch" type="xml">
+                <form string="Category">
+                    <header></header>
+                    <sheet>
+                        <group colspan="2" col="2">
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="res_partner_society_category_tree_view" model="ir.ui.view">
+            <field name="name">res.partner.society.category.tree</field>
+            <field name="model">res.partner.society.category</field>
+            <field name="arch" type="xml">
+                <tree string="Category">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="res_partner_society_category_action" model="ir.actions.act_window">
+            <field name="name">Catégorie Société</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner.society.category</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="res_partner_society_category_tree_view"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Créez votre première catégorie de société</p>
+            </field>
+        </record>
+
+
+        <record id="res_partner_activity_form_view" model="ir.ui.view">
+            <field name="name">res.partner.activity.form</field>
+            <field name="model">res.partner.activity</field>
+            <field name="arch" type="xml">
+                <form string="Activity">
+                    <header></header>
+                    <sheet>
+                        <group colspan="4" col="4">
+                            <field name="name"/>
+                            <field name="industry_id"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="res_partner_activity_tree_view" model="ir.ui.view">
+            <field name="name">res.partner.activity.tree</field>
+            <field name="model">res.partner.activity</field>
+            <field name="arch" type="xml">
+                <tree string="Activité">
+                    <field name="name"/>
+                    <field name="industry_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="res_partner_activity_action" model="ir.actions.act_window">
+            <field name="name">Activité</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner.activity</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="res_partner_activity_tree_view"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Créez votre première activité</p>
+            </field>
+        </record>
+
+
+        <record id="res_partner_function_tree_view" model="ir.ui.view">
+            <field name="name">res.partner.function.tree</field>
+            <field name="model">res.partner.function</field>
+            <field name="arch" type="xml">
+                <tree string="Function">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="res_partner_function_action" model="ir.actions.act_window">
+            <field name="name">Function</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner.function</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="res_partner_function_tree_view"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Créez votre première fonction</p>
+            </field>
+        </record>
+
+
+        <menuitem id="res_partner_category_menu"
+                  name="Catégorie"
+                  parent="contacts.res_partner_menu_config"/>
+
+        <menuitem id="res_partner_society_category_menu"
+                  name="Catégorie société"
+                  parent="res_partner_category_menu"
+                  action="res_partner_society_category_action"/>
+
+        <menuitem id="res_partner_industry_menu"
+                  name="Secteur"
+                  parent="res_partner_category_menu"
+                  action="base.res_partner_industry_action"/>
+
+        <menuitem id="res_partner_activity_menu"
+                  name="Activité"
+                  parent="res_partner_category_menu"
+                  action="res_partner_activity_action"/>
+
+        <menuitem id="res_partner_function_menu"
+                  name="Fonction"
+                  parent="res_partner_category_menu"
+                  action="res_partner_function_action"/>
+
+        <record id="res_partner_form_inherit" model="ir.ui.view">
+            <field name="name">res.partner.extends.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+
+                <!--                Todo rajouter la commune dans les informations-->
+
+                <xpath expr='//notebook/page[1]' position="attributes">
+                    <attribute name="attrs">{'invisible' : [('is_company','=',False)]}</attribute>
+                </xpath>
+
+                <xpath expr='//notebook/page[@name="sales_purchases"]' position="attributes">
+                    <attribute name="attrs">{'invisible' : [('is_company','=',False)]}</attribute>
+                </xpath>
+
+                <xpath expr='//notebook/page[@name="accounting"]' position="attributes">
+                    <attribute name="attrs">{'invisible' : [('is_company','=',False)]}</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='phone']" position="before">
+                    <field name="function_2" string="Fonction" widget='selection'
+                           attrs="{'invisible' : [('is_company','=',True)]}"/>
+
+                </xpath>
+
+                <xpath expr="//field[@name='street2']" position="after">
+                    <field name="postal"
+                           attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                </xpath>
+
+                <xpath expr="//field[@name='mobile']" position="after">
+                    <field name="personal_email" widget="email" attrs="{'invisible' : [('is_company','=',True)]}"/>
+                </xpath>
+
+                <xpath expr="//field[@name='title']" position="replace">
+                </xpath>
+
+                <xpath expr="//notebook/page[@name='sales_purchases']" position="before">
+                    <page string="Catégorie">
+
+                        <group>
+                            <group attrs="{'invisible' : [('is_company','=',True)]}">
+                                <field name="contact_nature"/>
+                                <field name="title"/>
+                                <field name="first_name"/>
+                                <field name="last_name"/>
+                                <field name="source"/>
+                            </group>
+                            <group attrs="{'invisible' : [('is_company','=',True)]}">
+                                <label for="" name="address_name">
+                                    <b>Adresse</b>
+                                </label>
+                                <div class="o_address_format">
+                                    <field name="personal_addr" placeholder="Street..." class="o_address_street"
+                                           attrs="{'invisible' : [('is_company','=',True)]}"/>
+                                    <field name="personal_addr2" placeholder="Street 2..." class="o_address_street"
+                                           attrs="{'invisible' : [('is_company','=',True)]}"/>
+                                    <field name="personal_postal" placeholder="Postal ..." class="o_address_street"
+                                           attrs="{'invisible' : [('is_company','=',True)]}"/>
+                                    <field name="personal_city" placeholder="City" class="o_address_city"
+                                           attrs="{'invisible' : [('is_company','=',True)]}"/>
+                                    <field name="commune" class="o_address_city" placeholder="Commune"
+                                           options="{&quot;no_open&quot;: True}"
+                                           attrs="{'invisible' : [('is_company','=',True)]}"/>
+                                    <field name="personal_code_postal" placeholder="ZIP" class="o_address_zip"
+                                           attrs="{'invisible' : [('is_company','=',True)]}"/>
+                                    <field name="country_id" placeholder="Country" class="o_address_country"
+                                           options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}"
+                                           attrs="{'invisible' : [('is_company','=',True)]}"/>
+                                </div>
+                            </group>
+
+
+                            <group attrs="{'invisible' : [('is_company','=',False)]}">
+                                <field name="society_nature"/>
+                                <field name="industry_id" attrs="{'invisible' : [('is_company','=',False)]}"/>
+                                <field name="activity" attrs="{'invisible' : [('is_company', '=',False)]}"
+                                       widget='selection'/>
+                                <field name="society_type" attrs="{'invisible' : [('is_company','=',False)]}"/>
+                                <field name="nbr_employee"/>
+                            </group>
+                            <group attrs="{'invisible' : [('is_company','=',False)]}">
+                                <field name="source"/>
+                                <field name="society_desc"/>
+                                <field name="society_category" invisible="1"/>
+                            </group>
+                        </group>
+
+                        <group colspan="4" col="4" string="Réseaux sociaux">
+                            <field name="twitter" Widget="url"/>
+                            <field name="facebook" Widget="url"/>
+                            <field name="linkedin" Widget="url"/>
+                            <field name="instagram" Widget="url"/>
+                        </group>
+
+                    </page>
+
+                </xpath>
+
+            </field>
+        </record>
+
+        <!--        Action res.partner customer-->
+        <record id="res_partner_company_action" model="ir.actions.act_window">
+            <field name="name">Société</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="domain">[('is_company', '=', True)]</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Créez votre première société</p>
+            </field>
+        </record>
+
+        <menuitem id="res_partner_company_menu"
+                  name="Société"
+                  parent="contacts.res_partner_menu_contacts"
+                  action="res_partner_company_action"
+                  sequence="1"/>
+
+        <!--        Action res.partner suppliers-->
+        <record id="res_partner_person_action" model="ir.actions.act_window">
+            <field name="name">Contact</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="domain">[('is_company', '!=', True)]</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Créez votre premier contact</p>
+            </field>
+        </record>
+
+        <menuitem id="res_partner_person_menu"
+                  name="Contact"
+                  parent="contacts.res_partner_menu_contacts"
+                  action="res_partner_person_action"
+                  sequence="2"/>
+
+    </data>
+</odoo>
